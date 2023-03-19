@@ -1,0 +1,27 @@
+body {
+  background-color: #393E46;
+  color: lightgreen;
+  text-align: center;
+}
+
+.title {
+    margin: auto;
+    width: 70%;
+}
+
+.title h1{
+    font-size: 8rem;
+    text-shadow: 5px 0 #232931;
+    font-family: 'Lobster', cursive;
+    padding-top: 5px;
+}
+
+.dice {
+    display: inline-block;
+    padding: 0 5% 10%;
+}
+
+.dice p{
+    font-family: 'Indie Flower', cursive;
+    font-size: 2rem;
+}
