@@ -1,0 +1,29 @@
+/*Tag Selectors*/
+body {
+    background-color: #BAD7E9;
+}
+
+hr {
+    color: #FCFFE7;
+    border-style: dotted none none;
+    border-width: 7px;
+    width: 6%;
+}
+
+h1 {
+    color: #2B3467;
+}
+
+h3 {
+    color: #2B3467;
+}
+
+/*Class Selectors*/
+.hobby:hover {
+    color: #FCFFE7;
+}
+
+/*ID Selectors*/
+#heading:hover {
+    color: #FCFFE7;
+}
