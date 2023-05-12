@@ -1,0 +1,11 @@
+<%- include('partials/header'); %>
+
+    <h1>Home</h1>
+    <p><%= homeStartingContent %></p>
+
+    <% truncPosts.forEach(function(i) { %>
+        <h2><%= i.title %></h2>
+        <p><%= i.body %> <a href=<%= i.lowerTitle %>>Read More</a></p>
+    <% }); %>
+
+<%- include('partials/footer'); %>
