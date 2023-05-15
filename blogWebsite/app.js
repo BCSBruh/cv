@@ -4,12 +4,14 @@ const ejs = require("ejs");
 const path = require('path');
 const lodash = require("lodash");
 const trunc = require(__dirname + '/truncate.js');
+const mongoose = require("mongoose")
+
+mongoose.connect("mongodb+srv://BCSBruh:Dogman26@blog.yzwaere.mongodb.net/blogDB")
 
 const app = express();
 
 let posts = [];
 let truncPosts = [];
-let links = [];
 
 app.set("view engine", "ejs");
 app.set('views', path.join(__dirname, 'views'));
