@@ -3,9 +3,9 @@
     <h1>Home</h1>
     <p><%= homeStartingContent %></p>
 
-    <% truncPosts.forEach(function(i) { %>
+    <% blogPosts.forEach(function(i) { %>
         <h2><%= i.title %></h2>
-        <p><%= i.body %> <a href=<%= i.lowerTitle %>>Read More</a></p>
+        <p><%= i.truncBody %> <a href=<%= "/posts/" + i.kebabTitle %>>Read More</a></p>
     <% }); %>
 
 <%- include('partials/footer'); %>

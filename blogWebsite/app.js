@@ -12,12 +12,11 @@ mongoose.connect(
 
 const app = express();
 
-let posts = [];
-let truncPosts = [];
-
-const blogSchema = new mongoose.Schema({
+const blogPostSchema = new mongoose.Schema({
   title: String,
+  kebabTitle: String,
   body: String,
+  truncBody: String,
   type: String,
 });
 
@@ -27,8 +26,14 @@ const userSchema = new mongoose.Schema({
   userType: Number,
 });
 
-const BlogPost = mongoose.model("BlogPost", blogSchema);
+const blogSchema = new mongoose.Schema({
+  category: String,
+  posts: [blogPostSchema]
+})
+
+const BlogPost = mongoose.model("BlogPost", blogPostSchema);
 const User = mongoose.model("User", userSchema);
+const Blog = mongoose.model("Blog", blogSchema)
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -43,9 +48,18 @@ const aboutContent =
 const contactContent = "Contact me at the following locations:";
 
 app.get("/", function (req, res) {
-  res.render("home", {
-    homeStartingContent: homeStartingContent,
-    truncPosts: truncPosts,
+  BlogPost.find().then((blogs) => {
+    if (blogs.length === 0) {
+      res.render("home", {
+        homeStartingContent: homeStartingContent,
+        blogPosts: [],
+      });
+    } else {
+      res.render("home", {
+        homeStartingContent: homeStartingContent,
+        blogPosts: blogs,
+      });
+    }
   });
 });
 
@@ -62,47 +76,60 @@ app.get("/compose", function (req, res) {
 });
 
 app.get("/posts/:post", function (req, res) {
-  posts.forEach(function (i) {
-    if (lodash.lowerCase(req.params.post) === lodash.lowerCase(i.title)) {
-      res.render("post", { postTitle: i.title, postBody: i.body });
+  // Find the one post that matches the kebab title
+  BlogPost.findOne({kebabTitle: req.params.post}).then((post) => {
+    if (post === null) {
+      // Create Error message
+      res.redirect("/");
+    } else {
+      res.render("post", {postTitle: post.title, postBody: post.body})
     }
-  });
+  })
+
+
 });
 
 app.post("/compose", function (req, res) {
-  // let post = {
-  //   title: req.body.composedTitle,
-  //   body: req.body.composedBody,
-  // };
-
-  // let truncPost = {
-  //   title: req.body.composedTitle,
-  //   body: trunc.truncate(req.body.composedBody),
-  //   lowerTitle: "/posts/" + lodash.kebabCase(req.body.composedTitle),
-  // };
-
   let postTitle = req.body.composedTitle;
   let postBody = req.body.composedBody;
 
   // Save the post to the database
   BlogPost.findOne({ title: postTitle }).then((post) => {
     if (post === null) {
-      let post = new BlogPost({
-        title: postTitle,
-        body: postBody,
-        type: "blogPost",
-      });
+      var blog = new Blog ({
+        category: "Daily",
+      })
 
-      post.save();
+      if (postBody.length < 100) {
+        let post = new BlogPost({
+          title: postTitle,
+          kebabTitle: lodash.kebabCase(postTitle),
+          body: postBody,
+          truncBody: postBody,
+          type: "blogPost",
+        });
+
+        post.save();
+        blog.posts.push(post);
+        blog.save();
+      } else {
+        let post = new BlogPost({
+          title: postTitle,
+          kebabTitle: lodash.kebabCase(postTitle),
+          body: postBody,
+          truncBody: trunc.truncate(postBody),
+          type: "blogPost",
+        });
+
+        post.save();
+        blog.posts.push(post);
+        blog.save();
+      }
       res.redirect("/");
     } else {
-      // Create Error message
-      res.redirect("/");
+      res.redirect("/posts/" + post.kebabTitle);
     }
   });
-
-  // posts.push(post);
-  // truncPosts.push(truncPost);
 });
 
 app.listen(3000, function () {
