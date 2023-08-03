@@ -22,7 +22,7 @@ app.post("/", function (req, res) {
 
   const options = {
     method: "POST",
-    auth: "jerom:57973f2d618f34604f8038505282e81d-us8",
+    auth: "jerom:{put api key here}",
   };
 
   var data = {
