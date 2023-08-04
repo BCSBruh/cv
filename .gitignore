@@ -3,3 +3,5 @@ newsLetter/keys.txt
 .env
 
 node_modules
+
+*.md
