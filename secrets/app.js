@@ -28,7 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.connect(
-  "mongodb+srv://BCSBruh:Dogman26@blog.yzwaere.mongodb.net/userDB"
+  env.URI;
 );
 
 const userSchema = new mongoose.Schema({
