@@ -7,7 +7,7 @@ const trunc = require(__dirname + "/truncate.js");
 const mongoose = require("mongoose");
 
 mongoose.connect(
-  "mongodb+srv://BCSBruh:Dogman26@blog.yzwaere.mongodb.net/blogDB"
+  env.URI;
 );
 
 const app = express();
